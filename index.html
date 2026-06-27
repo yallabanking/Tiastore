@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIA STORE | المتجر المودرن الفاخر</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark-deep: #090D16;
+            --bg-dark-card: #131A26;
+            --accent-neon: #38BDF8;
+            --accent-gold: #F59E0B;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
+        body { background-color: var(--bg-dark-deep); color: var(--text-main); overflow-x: hidden; }
+        button { cursor: pointer; border: none; border-radius: 12px; font-weight: bold; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        header { background-color: var(--bg-dark-card); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(148, 163, 184, 0.08); }
+        .header-container { max-width: 1200px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header-right { display: flex; align-items: center; gap: 30px; }
+        .logo-btn { background: none; font-size: 26px; font-weight: 700; color: var(--text-main); }
+        .logo-btn span { color: var(--accent-neon); }
+        nav ul { display: flex; list-style: none; gap: 10px; }
+        .nav-filter-btn { background: none; color: var(--text-muted); padding: 10px 16px; font-size: 15px; }
+        .nav-filter-btn:hover, .nav-filter-btn.active { color: var(--accent-neon); background-color: rgba(56, 189, 248, 0.08); }
+        .cart-icon-btn { background-color: rgba(56, 189, 248, 0.1); color: var(--accent-neon); padding: 10px 18px; border: 1px solid rgba(56, 189, 248, 0.2); display: flex; align-items: center; gap: 8px; }
+        .cart-count { background-color: var(--accent-neon); color: var(--bg-dark-deep); padding: 2px 8px; border-radius: 20px; font-size: 12px; }
+        
+        .cart-sidebar { position: fixed; top: 0; left: -420px; width: 100%; max-width: 400px; height: 100%; background-color: var(--bg-dark-card); z-index: 2000; transition: all 0.3s ease; padding: 30px 20px; display: flex; flex-direction: column; box-shadow: 5px 0 25px rgba(0,0,0,0.5); }
+        .cart-sidebar.active { left: 0; }
+        .cart-item { display: flex; gap: 15px; background-color: rgba(9, 13, 22, 0.6); padding: 15px; border-radius: 12px; margin-bottom: 12px; align-items: center; }
+        .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+        .qty-btn { background-color: var(--bg-dark-deep); color: var(--text-main); width: 28px; height: 28px; border-radius: 6px; }
+
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 30px; }
+        .product-card { background-color: var(--bg-dark-card); border-radius: 20px; overflow: hidden; border: 1px solid rgba(148, 163, 184, 0.05); display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .product-card:hover { transform: translateY(-8px); border-color: rgba(56, 189, 248, 0.3); }
+        .product-img-wrapper { width: 100%; height: 340px; overflow: hidden; }
+        .product-img { width: 100%; height: 100%; object-fit: cover; }
+        .product-info { padding: 25px; text-align: right; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-category { font-size: 12px; color: var(--accent-neon); margin-bottom: 8px; font-weight: 700; }
+        .product-name { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+        .product-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 15px; line-height: 1.6; }
+        .product-stock { font-size: 12px; color: #10B981; background-color: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 6px; width: fit-content; margin-bottom: 20px; }
+        .card-footer-row { display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid rgba(148, 163, 184, 0.06); padding-top: 15px; }
+        .product-price { color: var(--accent-gold); font-weight: 700; font-size: 20px; }
+        .btn-add-cart { background: linear-gradient(135deg, var(--accent-neon), #0284C7); color: var(--bg-dark-deep); padding: 10px 20px; font-size: 14px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-top: 50px; border-bottom: 1px solid rgba(148, 163, 184, 0.08); padding-bottom: 15px; }
+        .close-btn { background: none; color: var(--text-muted); font-size: 28px; }
+
+        @media (max-width: 768px) { .header-container { flex-direction: column; gap: 15px; } .header-right { flex-direction: column; width: 100%; } nav ul { flex-wrap: wrap; justify-content: center; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="header-right">
+                <button class="logo-btn" onclick="filterProducts('all')">TIA <span>STORE</span></button>
+                <nav>
+                    <ul>
+                        <li><button class="nav-filter-btn" onclick="filterProducts('kids')">ملابس أطفال</button></li>
+                        <li><button class="nav-filter-btn" onclick="filterProducts('women')">ملابس حريمي</button></li>
+                        <li><button class="nav-filter-btn" onclick="filterProducts('men')">ملابس رجالي</button></li>
+                        <li><button class="nav-filter-btn" onclick="filterProducts('accessories')">اكسسوارات</button></li>
+                        <li><button class="nav-filter-btn" onclick="filterProducts('home')">أدوات منزلية</button></li>
+                    </ul>
+                </nav>
+            </div>
+            <button class="cart-icon-btn" onclick="toggleCart()">🛒 السلة <span class="cart-count" id="cartCount">0</span></button>
+        </div>
+    </header>
+
+    <!-- سلة تسوق العميل الجانبية -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(148, 163, 184, 0.08); padding-bottom: 10px;">
+            <h3>سلة التسوق الذكية</h3>
+            <button class="close-btn" onclick="toggleCart()">×</button>
+        </div>
+        <div style="flex-grow: 1; overflow-y: auto;" id="cartItemsContainer"></div>
+        <div style="border-top: 1px solid rgba(148, 163, 184, 0.08); padding-top: 15px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 18px; font-weight: bold;">
+                <span>الإجمالي الفعلي:</span>
+                <span id="cartTotalSum" style="color: var(--accent-gold);">0 ج.م</span>
+            </div>
+            <button style="width: 100%; padding: 12px; background-color: var(--accent-neon); color: #090D16; border-radius:12px; font-weight:bold;" onclick="alert('جاري الانتقال لشبكة الدفع الإلكتروني المعتمدة...')">💳 الانتقال للدفع الإلكتروني</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="section-header">
+            <h2 id="sectionTitleDisplay">كل المنتجات المتاحة</h2>
+        </div>
+        <div class="products-grid" id="productsContainer"></div>
+    </div>
+
+    <script>
+        let currentFilter = 'all';
+        let cart = [];
+
+        // الميزة العبقرية: الموقع يستمع لـ لوحة التحكم وإذا تم الحذف أو الإضافة يتم التحديث فوراً دون ريفريش!
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'tia_products') { renderProducts(); }
+        });
+
+        window.onload = function() { renderProducts(); };
+
+        function renderProducts() {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = '';
+            
+            let products = JSON.parse(localStorage.getItem('tia_products')) || [];
+            let filteredItems = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+            
+            if(filteredItems.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); text-align:center; grid-column: 1/-1; padding: 40px;">لا توجد منتجات متاحة في هذا القسم حالياً.</p>`;
+                return;
+            }
+
+            filteredItems.forEach(p => {
+                container.innerHTML += `
+                    <div class="product-card">
+                        <div class="product-img-wrapper"><img class="product-img" src="${p.img}"></div>
+                        <div class="product-info">
+                            <span class="product-category">${translateCat(p.category)}</span>
+                            <h3 class="product-name">${p.name}</h3>
+                            <p class="product-desc">${p.desc}</p>
+                            <span class="product-stock">⚡ متوفر بالمخزن: ${p.stock} قطع</span>
+                            <div class="card-footer-row">
+                                <span class="product-price">${p.price} ج.م</span>
+                                <button class="btn-add-cart" style="padding:10px 20px; border-radius:12px;" onclick="addToCartById(${p.id})">🛒 إضافة للسلة</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function translateCat(cat) {
+            const mapping = { men: "ملابس رجالي", women: "ملابس حريمي", kids: "ملابس أطفال", accessories: "اكسسوارات", home: "أدوات منزلية" };
+            return mapping[cat] || cat;
+        }
+
+        function filterProducts(category) {
+            currentFilter = category;
+            document.getElementById('sectionTitleDisplay').innerText = category === 'all' ? "كل المنتجات المتاحة" : "قسم: " + translateCat(category);
+            renderProducts();
+        }
+
+        function addToCartById(id) {
+            let products = JSON.parse(localStorage.getItem('tia_products')) || [];
+            const prod = products.find(p => p.id === id);
+            if (!prod || prod.stock <= 0) { alert('عذراً، انتهت كمية المنتج من المخزن!'); return; }
+            
+            prod.stock--;
+            localStorage.setItem('tia_products', JSON.stringify(products));
+            
+            const cartItem = cart.find(item => item.id === id);
+            if (cartItem) { cartItem.qty++; } else { cart.push({ id: prod.id, name: prod.name, price: prod.price, img: prod.img, qty: 1 }); }
+            updateCart();
+            renderProducts();
+        }
+
+        function changeQty(id, delta) {
+            let products = JSON.parse(localStorage.getItem('tia_products')) || [];
+            const item = cart.find(i => i.id === id);
+            const prod = products.find(p => p.id === id);
+            
+            if (delta > 0) {
+                if (!prod || prod.stock <= 0) { alert('المخزن نفذ!'); return; }
+                prod.stock--; item.qty++;
+            } else {
+                if(prod) prod.stock++;
+                item.qty--;
+                if (item.qty <= 0) { cart = cart.filter(i => i.id !== id); }
+            }
+            localStorage.setItem('tia_products', JSON.stringify(products));
+            updateCart();
+            renderProducts();
+        }
+
+        function updateCart() {
+            const countEl = document.getElementById('cartCount');
+            const container = document.getElementById('cartItemsContainer');
+            const totalEl = document.getElementById('cartTotalSum');
+            countEl.innerText = cart.reduce((acc, i) => acc + i.qty, 0);
+            container.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                total += (item.price * item.qty);
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.img}">
+                        <div style="flex-grow:1; text-align:right;">
+                            <div style="font-size:14px; font-weight:bold;">${item.name}</div>
+                            <div style="color:var(--accent-gold); font-size:13px; margin-top:4px;">${item.price} ج.م</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:5px;">
+                            <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+                            <span style="font-weight:bold; min-width:15px; text-align:center;">${item.qty}</span>
+                            <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+            totalEl.innerText = total + ' ج.م';
+        }
+
+        function toggleCart() { document.getElementById('cartSidebar').classList.toggle('active'); }
+    </script>
+</body>
+</html>

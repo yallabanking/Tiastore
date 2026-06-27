@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم TIA STORE | مستقلة</title>
+    <title>لوحة تحكم TIA STORE | مستقلة ومستجيبة ديناميكياً</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -18,22 +18,21 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
         body { background-color: var(--bg-dark-deep); color: var(--text-main); padding: 30px 20px; }
         .admin-container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
-        .panel-card { background-color: var(--bg-dark-card); border-radius: 20px; padding: 25px; border: 1px solid rgba(148, 163, 184, 0.08); height: fit-content; }
+        .panel-card { background-color: var(--bg-dark-card); border-radius: 20px; padding: 25px; border: 1px solid rgba(148, 163, 184, 0.08); height: fit-content; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         h2, h3 { margin-bottom: 20px; font-weight: 700; color: var(--text-main); border-bottom: 1px solid rgba(148, 163, 184, 0.08); padding-bottom: 10px; }
         label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-muted); }
         input, select, textarea { width: 100%; padding: 12px; background-color: var(--bg-dark-deep); border: 1px solid rgba(148, 163, 184, 0.15); color: var(--text-main); border-radius: 10px; margin-bottom: 15px; font-size: 14px; }
         input[type="file"] { background-color: rgba(56, 189, 248, 0.05); border: 1px dashed var(--accent-neon); color: var(--accent-neon); cursor: pointer; }
         button { width: 100%; padding: 12px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; background-color: var(--accent-neon); color: var(--bg-dark-deep); }
-        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        button:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3); }
         
-        /* جدول إدارة وحذف المنتجات داخل لوحة التحكم */
         .products-table-wrapper { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: right; }
         th, td { padding: 15px; border-bottom: 1px solid rgba(148, 163, 184, 0.08); }
         th { color: var(--accent-neon); font-size: 15px; }
         .table-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; }
         .btn-delete { background-color: rgba(239, 68, 68, 0.1); color: var(--danger-color); border: 1px solid rgba(239, 68, 68, 0.2); padding: 6px 12px; border-radius: 8px; font-size: 13px; width: auto; }
-        .btn-delete:hover { background-color: var(--danger-color); color: white; }
+        .btn-delete:hover { background-color: var(--danger-color); color: white; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); }
         
         @media (max-width: 768px) { .admin-container { grid-template-columns: 1fr; } }
     </style>
@@ -41,14 +40,13 @@
 <body>
 
     <div style="text-align: center; margin-bottom: 40px;">
-        <h1 style="font-size: 32px; color: var(--text-main);">لوحة التحكم الاحترافية الفضائية لحساب <span>TIA STORE</span></h1>
-        <p style="color: var(--text-muted); margin-top: 10px;">إدارة المخزون، رفع الصور الفورية من الجهاز، وحذف المنتجات من الموقع بالكامل</p>
+        <h1 style="font-size: 32px; color: var(--text-main);">لوحة التحكم الاحترافية لحساب <span>TIA STORE</span></h1>
+        <p style="color: var(--text-muted); margin-top: 10px;">تزامن فوري مطلق ومراقبة حية لحركة المنتجات والمخزون</p>
     </div>
 
     <div class="admin-container">
-        <!-- نموذج الإضافة -->
         <div class="panel-card">
-            <h3>⚙️ إضافة منتج للمخزن</h3>
+            <h3>⚙️ إضافة منتج جديد</h3>
             <label>اسم المنتج:</label>
             <input type="text" id="pName" value="جاكيت كاجوال فاخر">
             
@@ -76,9 +74,8 @@
             <button onclick="addNewProduct()">🚀 نشر وإرسال للموقع</button>
         </div>
 
-        <!-- جدول الحذف والمراقبة المباشرة -->
         <div class="panel-card">
-            <h3>📦 كل المنتجات الحالية بالمتجر (امسح واحذف من هنا)</h3>
+            <h3>📦 كل المنتجات الحالية بالمتجر (تحديث حي ومباشر)</h3>
             <div class="products-table-wrapper">
                 <table>
                     <thead>
@@ -92,25 +89,39 @@
                         </tr>
                     </thead>
                     <tbody id="adminProductsTable">
-                        <!-- تظهر المنتجات برمجياً هنا -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
     </div>
 
     <script>
-        // قاعدة البيانات المبدئية في حال لم تكن مخزنة من قبل
-        let defaultProducts = [
-            { id: 1, name: "سترة شتوية حضرية (Urban Jacket)", category: "men", price: 1890, stock: 12, desc: "مصنوعة من طبقات مقاومة للرياح ومبطنة بالكامل لتوفير دفء ممتاز بنمط عالمي الفخامة.", img: "https://images.unsplash.com/photo-1618886614638-80e3c103d31a?q=80&w=500" },
-            { id: 2, name: "مصباح طاقة ذكي هندسي وعصري", category: "home", price: 950, stock: 8, desc: "إضاءة محيطية متقدمة وتفاعلية بـ 16 مليون لون مع إمكانية التحكم الكامل بواسطة الهاتف.", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=500" },
-            { id: 3, name: "فستان خريف ستوديو عالي الجودة", category: "women", price: 3100, stock: 5, desc: "منسوج من خامات فاخرة مستدامة توفر إطلالة استثنائية تجذب الأنظار في كافة الفعاليات.", img: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=500" }
-        ];
+        let products = [];
+        let lastStorageState = '';
 
-        let products = JSON.parse(localStorage.getItem('tia_products')) || defaultProducts;
+        window.onload = function() {
+            loadAndRender();
+
+            // الفحص الدوري الذكي والمستمر كل نصف ثانية لمراقبة التغييرات (مثلاً لو اشترى عميل ينقص المخزن فوراً هنا)
+            setInterval(function() {
+                let currentState = localStorage.getItem('tia_products');
+                if (currentState !== lastStorageState) {
+                    loadAndRender();
+                }
+            }, 500);
+        };
+
+        function loadAndRender() {
+            let currentState = localStorage.getItem('tia_products');
+            products = JSON.parse(currentState) || [];
+            lastStorageState = currentState;
+            renderAdminTable();
+        }
 
         function updateStorage() {
-            localStorage.setItem('tia_products', JSON.stringify(products));
+            let stateString = JSON.stringify(products);
+            localStorage.setItem('tia_products', stateString);
+            lastStorageState = stateString;
             renderAdminTable();
         }
 
@@ -119,10 +130,15 @@
             return mapping[cat] || cat;
         }
 
-        // دالة عرض المنتجات في جدول لوحة التحكم مع أزرار الحذف الفورية
         function renderAdminTable() {
             const tbody = document.getElementById('adminProductsTable');
             tbody.innerHTML = '';
+            
+            if(products.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:30px;">المخزن فارغ تماماً حالياً! قم بإضافة منتجاتك.</td></tr>`;
+                return;
+            }
+
             products.forEach(p => {
                 tbody.innerHTML += `
                     <tr>
@@ -130,7 +146,7 @@
                         <td style="font-weight:bold;">${p.name}</td>
                         <td>${translateCat(p.category)}</td>
                         <td style="color:var(--accent-gold); font-weight:700;">${p.price} ج.م</td>
-                        <td>${p.stock} قطعة</td>
+                        <td><span style="color: ${p.stock <= 3 ? 'var(--danger-color)' : '#10B981'}; font-weight:bold;">${p.stock} قطعة</span></td>
                         <td><button class="btn-delete" onclick="deleteProduct(${p.id})">🗑️ حذف نهائي</button></td>
                     </tr>
                 `;
@@ -145,7 +161,7 @@
             const stock = parseInt(document.getElementById('pStock').value);
             const fileInput = document.getElementById('pImgFile');
 
-            if(!name || !price) { alert('برجاء إدخال البيانات الأساسية للمنتج'); return; }
+            if(!name || !price || isNaN(price)) { alert('برجاء إدخال اسم المنتج وسعره بشكل صحيح!'); return; }
 
             let imgUrl = "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400";
 
@@ -165,19 +181,15 @@
             products.push({ id: Date.now(), name, category, price, stock, desc, img });
             updateStorage();
             document.getElementById('pImgFile').value = '';
-            alert('تم رفع الصورة وإرسال الكارت بنجاح لواجهة المتجر!');
+            alert('تم حفظ المنتج بنجاح وتحديث كافة شاشات الموقع كلياً!');
         }
 
-        // دالة الحذف المستقلة والآمنة من لوحة التحكم فقط
         function deleteProduct(id) {
-            if(confirm('هل أنت متأكد من رغبتك في مسح هذا المنتج نهائياً من شاشة العملاء والموقع؟')) {
+            if(confirm('هل أنت متأكد من رغبتك في حذف هذا المنتج نهائياً واختفائه من شاشة الزوار؟')) {
                 products = products.filter(p => p.id !== id);
                 updateStorage();
             }
         }
-
-        // التشغيل الأول للوحة التحكم
-        renderAdminTable();
     </script>
 </body>
 </html>

@@ -6,7 +6,9 @@
     <title>TIA STORE | المفهوم التكيفي الذكي</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
+        /* 🎨 هندسة الألوان التكيفية للوضعين الداكن والفاتح */
         :root {
+            /* الوضع الداكن الافتراضي (Dark Mode) */
             --bg-pure-black: #05070C;
             --bg-dock-glass: rgba(15, 23, 42, 0.75);
             --border-glass: rgba(255, 255, 255, 0.08);
@@ -15,6 +17,20 @@
             --accent-neon: #38BDF8;
             --text-pure: #F8FAFC;
             --text-muted: #64748B;
+            --shadow-card: rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="light"] {
+            /* الوضع الفاتح الاحترافي (Light Mode) */
+            --bg-pure-black: #F8FAFC;
+            --bg-dock-glass: rgba(255, 255, 255, 0.8);
+            --border-glass: rgba(15, 23, 42, 0.08);
+            --bg-card: #FFFFFF;
+            --accent-gold: #B45309;
+            --accent-neon: #0284C7;
+            --text-pure: #0F172A;
+            --text-muted: #64748B;
+            --shadow-card: rgba(15, 23, 42, 0.05);
         }
 
         * {
@@ -30,6 +46,7 @@
             color: var(--text-pure);
             letter-spacing: -0.2px;
             padding-bottom: 100px;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         ::-webkit-scrollbar { width: 6px; }
@@ -44,12 +61,19 @@
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        /* الشعار العلوي وزر المود الذكي */
         .brand-header {
-            text-align: center;
-            padding: 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 40px;
             border-bottom: 1px solid var(--border-glass);
-            background: #090D16;
+            background: var(--bg-card);
+            transition: background-color 0.4s ease;
         }
+
+        /* الحفاظ على توسيط اللوجو */
+        .header-spacer { width: 40px; } 
 
         .logo-text {
             font-size: 28px;
@@ -63,7 +87,34 @@
             color: var(--text-muted);
         }
 
-        /* 🎪 السلايدر التكيفي المطور */
+        /* ☀️ / 🌙 تصميم زر تغيير الوضع المودرن */
+        .theme-toggle-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-glass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-pure);
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--accent-neon);
+            background: rgba(56, 189, 248, 0.05);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        /* 🎪 السلايدر التكيفي الذكي */
         .slider-container {
             position: relative;
             width: 100%;
@@ -73,7 +124,8 @@
             border-radius: 24px;
             overflow: hidden;
             border: 1px solid var(--border-glass);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 40px var(--shadow-card);
+            transition: box-shadow 0.4s ease, border 0.4s ease;
         }
 
         .slider-wrapper {
@@ -99,8 +151,9 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(90deg, transparent 30%, rgba(5, 7, 12, 0.9) 100%);
+            background: linear-gradient(90deg, transparent 30%, var(--bg-pure-black) 100%);
             z-index: 1;
+            transition: background 0.4s ease;
         }
 
         .slide-content {
@@ -129,7 +182,7 @@
 
         .slide-desc {
             font-size: 15px;
-            color: #94A3B8;
+            color: var(--text-muted);
             margin-bottom: 30px;
             line-height: 1.6;
             font-weight: 300;
@@ -142,10 +195,12 @@
             font-size: 14px;
             font-weight: 700;
             border-radius: 8px;
+            transition: background-color 0.4s, color 0.4s;
         }
 
         .btn-slide-action:hover {
             background-color: var(--accent-neon);
+            color: #05070C;
             box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
         }
 
@@ -166,8 +221,8 @@
         }
 
         .slider-arrow:hover { background: var(--accent-neon); }
-        .slider-arrow:hover svg { stroke: var(--bg-pure-black); }
-        .slider-arrow svg { width: 20px; height: 20px; stroke: var(--text-pure); fill: none; stroke-width: 2; }
+        .slider-arrow:hover svg { stroke: #05070C; }
+        .slider-arrow svg { width: 20px; height: 20px; stroke: #FFFFFF; fill: none; stroke-width: 2; }
 
         .arrow-next { left: 20px; }
         .arrow-prev { right: 20px; }
@@ -211,12 +266,13 @@
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--border-glass);
             border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
             z-index: 1000;
             display: flex;
             justify-content: space-around;
             align-items: center;
             padding: 0 15px;
+            transition: background 0.4s, border 0.4s, box-shadow 0.4s;
         }
 
         .dock-btn {
@@ -264,22 +320,22 @@
             width: 100%;
             max-width: 420px;
             height: 100%;
-            background-color: #090D14;
+            background-color: var(--bg-card);
             z-index: 2000;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s;
             padding: 40px 30px;
             display: flex;
             flex-direction: column;
             border-right: 1px solid var(--border-glass);
-            box-shadow: 25px 0 60px rgba(0,0,0,0.7);
+            box-shadow: 25px 0 60px rgba(0,0,0,0.5);
         }
 
         .cart-sidebar.active { left: 0; }
-        .cart-item { display: flex; gap: 15px; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 16px; margin-bottom: 15px; align-items: center; border: 1px solid var(--border-glass); }
+        .cart-item { display: flex; gap: 15px; background: rgba(0,0,0,0.03); padding: 15px; border-radius: 16px; margin-bottom: 15px; align-items: center; border: 1px solid var(--border-glass); }
         .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 10px; }
 
         .qty-btn {
-            background-color: rgba(255,255,255,0.05);
+            background-color: rgba(0,0,0,0.05);
             color: var(--text-pure);
             width: 28px;
             height: 28px;
@@ -296,28 +352,28 @@
 
         /* شبكة المنتجات الاحترافية الفاخرة */
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 35px; }
-        .product-card { background: var(--bg-card); border-radius: 24px; overflow: hidden; border: 1px solid var(--border-glass); display: flex; flex-direction: column; box-shadow: 0 15px 35px rgba(0,0,0,0.4); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .product-card:hover { transform: translateY(-8px); border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); }
+        .product-card { background: var(--bg-card); border-radius: 24px; overflow: hidden; border: 1px solid var(--border-glass); display: flex; flex-direction: column; box-shadow: 0 15px 35px var(--shadow-card); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .product-card:hover { transform: translateY(-8px); border-color: var(--accent-neon); box-shadow: 0 30px 60px var(--shadow-card); }
         .product-img-wrapper { width: 100%; height: 380px; overflow: hidden; }
         .product-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         .product-card:hover .product-img { transform: scale(1.04); }
         .product-info { padding: 25px; text-align: right; display: flex; flex-direction: column; flex-grow: 1; }
         .product-category { font-size: 11px; color: var(--accent-neon); margin-bottom: 8px; font-weight: 700; }
         .product-name { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
-        .product-desc { font-size: 13.5px; color: #94A3B8; margin-bottom: 20px; line-height: 1.6; font-weight: 300; }
+        .product-desc { font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; font-weight: 300; }
         .product-stock { font-size: 11px; color: #10B981; background-color: rgba(16, 185, 129, 0.08); padding: 4px 10px; border-radius: 6px; width: fit-content; margin-bottom: 20px; }
-        .card-footer-row { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.04); padding-top: 15px; }
+        .card-footer-row { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-glass); padding-top: 15px; }
         .product-price { color: var(--accent-gold); font-weight: 700; font-size: 20px; }
-        .btn-add-cart { background-color: var(--text-pure); color: var(--bg-pure-black); padding: 10px 20px; font-size: 13px; font-weight: 700; border-radius: 8px; }
-        .btn-add-cart:hover { background-color: var(--accent-neon); box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3); }
+        .btn-add-cart { background-color: var(--text-pure); color: var(--bg-pure-black); padding: 10px 20px; font-size: 13px; font-weight: 700; border-radius: 8px; transition: background-color 0.4s, color 0.4s; }
+        .btn-add-cart:hover { background-color: var(--accent-neon); color: #05070C; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3); }
         .close-btn { color: var(--text-muted); font-size: 32px; }
         .dock-cart-badge { position: absolute; top: 10px; right: 22px; background-color: var(--accent-gold); color: white; font-size: 10px; padding: 1px 5px; border-radius: 10px; font-weight: 700; }
 
         @media (max-width: 768px) {
+            .brand-header { padding: 20px; }
             .slider-container { height: 350px; margin: 15px; border-radius: 16px; }
             .slide { padding: 0 30px; }
             .slide-title { font-size: 24px; }
-            .slide-desc { display: none; }
             .bottom-dock-nav { width: 95%; bottom: 15px; height: 70px; border-radius: 20px; }
             .dock-btn { font-size: 10px; gap: 4px; }
             .dock-btn svg { width: 20px; height: 20px; }
@@ -336,7 +392,11 @@
 <body>
 
     <div class="brand-header">
-        <button class="logo-btn" onclick="filterProducts('all')"><h1 class="logo-text">TIA <span>STORE</span></h1></button>
+        <div class="header-spacer"></div> <button class="logo-btn" onclick="filterProducts('all')"><h1 class="logo-text">TIA <span>STORE</span></h1></button>
+        
+        <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeToggleBtn" title="تبديل الوضع">
+            <svg id="themeIcon" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707m12.828 5.657a8 8 0 11-8.586-8.586 8.001 8.001 0 008.586 8.586z"/></svg>
+        </button>
     </div>
 
     <div class="slider-container">
@@ -407,6 +467,12 @@
                 ];
                 localStorage.setItem('tia_products', JSON.stringify(defaultProducts));
             }
+            
+            // قراءة المود المحفوظ سابقاً في متصفح العميل لراحتهم
+            const savedTheme = localStorage.getItem('tia_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+
             renderStore(); 
             
             setInterval(function() {
@@ -420,24 +486,44 @@
             setInterval(() => { moveSlide(1); }, 5000);
         };
 
+        // 🧠 دالة تبديل الوضع برمجياً وجملياً بين الداكن والفاتح
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('tia_theme', newTheme);
+            updateThemeIcon(newTheme);
+            buildAdaptiveSlider(); // إعادة بناء السلايدر ليتناسب التظليل مع المود الجديد فوراً
+        }
+
+        // دالة تبديل شكل الأيقونة برمجياً (رسم شمس واضحة للنهار وقمر لليل)
+        function updateThemeIcon(theme) {
+            const iconSvg = document.getElementById('themeIcon');
+            if(theme === 'light') {
+                // أيقونة شمس هندسية واضحة في وضع النهار
+                iconSvg.innerHTML = `<circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>`;
+            } else {
+                // أيقونة قمر نيون كلاسيكية في الوضع الليلي الفاخر
+                iconSvg.innerHTML = `<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>`;
+            }
+        }
+
         function renderStore() {
             renderProducts();
             buildAdaptiveSlider();
         }
 
-        // 🧠 الدالة العبقرية والتكيفية لبناء السلايدر حسب تصفح القسم الحالي
         function buildAdaptiveSlider() {
             let products = JSON.parse(localStorage.getItem('tia_products')) || [];
             const sliderWrapper = document.getElementById('sliderWrapper');
             const dotsContainer = document.getElementById('sliderDots');
             
+            if(!sliderWrapper) return;
             sliderWrapper.innerHTML = '';
             dotsContainer.innerHTML = '';
 
-            // خطوة التصفية الذكية: إذا كنا بالرئيسية نأخذ الكل، وإذا كنا بداخل قسم نأخذ منتجات القسم فقط
             let targetProducts = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
-
-            // ترتيب تنازلي لأخذ "أحدث 3 منتجات واصلة" بالقسم المعين
             let latestItems = [...targetProducts].reverse().slice(0, 3);
 
             if(latestItems.length === 0) {
@@ -446,7 +532,7 @@
                         <div class="slide-content">
                             <span class="slide-tag">${translateCat(currentFilter)} ✨</span>
                             <h2 class="slide-title">ترقبوا تشكيلة قريبة</h2>
-                            <p class="slide-desc">مجموعاتنا المخصصة لهذا القسم جاري تحضيرها برعاية كبار المصممين، ترقبوا إطلاقها من اللوحة.</p>
+                            <p class="slide-desc">مجموعاتنا المخصصة لهذا القسم جاري تحضيرها برعاية كبار المصممين.</p>
                         </div>
                     </div>`;
                 return;
@@ -469,7 +555,6 @@
                 dotsContainer.innerHTML += `<span class="dot ${idx === slideIndex ? 'active' : ''}" onclick="currentSlide(${idx})"></span>`;
             });
             
-            // إعادة ضبط مؤشر السلايدر لمنع حدوث قفزات برمجية أثناء تبديل الأقسام
             if (slideIndex >= latestItems.length) slideIndex = 0;
             showSlides();
         }
@@ -533,7 +618,7 @@
 
         function filterProducts(category) {
             currentFilter = category;
-            slideIndex = 0; // إعادة ضبط السلايدر لأول شريحة بالقسم الجديد
+            slideIndex = 0; 
             document.getElementById('sectionTitleDisplay').innerText = category === 'all' ? "كل المجموعات المتوفرة" : "قسم: " + translateCat(category);
             renderStore();
         }
